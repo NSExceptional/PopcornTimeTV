@@ -2,16 +2,18 @@
   <img src="http://i.imgur.com/76RElTT.png" alt="Popcorn Time" title="Popcorn Time">
 </p>
 
-## Popcorn Time for tvOS and iOS _WE ARE BACK_
+## Popcorn Time for tvOS and iOS Fork
 
 [![Platform](http://img.shields.io/badge/platform-iOS%20%7C%20tvOS-lightgrey.svg?style=flat)](https://github.com/PopcornTimeTV)
-[![Build Status](https://travis-ci.org/PopcornTimeTV/PopcornTimeTV.svg?branch=master)](https://travis-ci.org/PopcornTimeTV/PopcornTimeTV)
-[![Twitter](https://img.shields.io/badge/twitter-@Popcorn%20Time-3299EC.svg?style=flat)](https://twitter.com/popcorntimetv)
-[![Reddit](https://img.shields.io/badge/discussion-reddit-red.svg?style=flat)](https://reddit.com/r/popcorntime)
-[![Facebook](https://img.shields.io/badge/facebook-Popcorn%20Time-354F88.svg?style=flat)](https://www.facebook.com/PopcornTimedotsh)
+[![Twitter](https://img.shields.io/badge/twitter-@NSExceptional-3299EC.svg?style=flat)](https://twitter.com/NSExceptional)
+[![Reddit](https://img.shields.io/badge/discussion-reddit-red.svg?style=flat)](https://reddit.com/r/PopcornTimeApp)
 [![License](https://img.shields.io/badge/license-GPL_v3-373737.svg?style=flat)](https://github.com/PopcornTimeTV/PopcornTimeTV/blob/master/LICENSE.md)
 
-PopcornTimeTV was an Apple TV, iPhone and iPad application to torrent movies and tv shows for streaming.
+I, NSExceptional, have forked this repository to maintain it for myself. I will probably not be posting any releases unless someone asks me for one and I get this thing working again. Below is the original README left when I forked it after the repo was archived.
+
+---
+
+PopcornTimeTV was an Apple TV, iPhone and iPad application to torrent movies and TV shows for streaming.
 
 Since 2016, this project has grown exponentially - both in its user base and in its functionality. However, the team size has gone the other way. We went from having 13+ developers on the team to 1 developer and 1 designer, both of whom have lives and projects outside of Popcorn Time. We have decided that we have given our all to this project and it's time for us to move on to pursue greater things. There is no doubt that this comes with a heavy heart as we have learned so much from this project and watched it grow from this simple torrenting app that could only play 720p video, to what it is today.
 
