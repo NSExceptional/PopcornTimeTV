@@ -79,18 +79,16 @@ extension UIImage {
         return scaledImage
     }
     
-    /**
-     Transforms image to a layer mask.
-     
-     When the layer is returned, set its frame to the view that the mask is being applied to's frame.
-     
-     Example usage:
-     
-         if let layer = imageView.image?.layerMask {
-             layer.frame = view.frame
-             view.layer.mask = layer
-         }
-     */
+    /// Transforms image to a layer mask.
+    /// 
+    /// When the layer is returned, set its frame to the view that the mask is being applied to's frame.
+    /// 
+    /// Example usage:
+    /// 
+    ///     if let layer = imageView.image?.layerMask {
+    ///         layer.frame = view.frame
+    ///         view.layer.mask = layer
+    ///     }
     var layerMask: CALayer? {
         guard
             let copy = copy() as? UIImage,

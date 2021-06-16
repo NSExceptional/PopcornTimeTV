@@ -3,9 +3,7 @@
 import Foundation
 import ObjectMapper
 
-/**
- Health of a torrent.
- */
+/// Health of a torrent.
 public enum Health {
     /// Low number of seeds and peers.
     case bad
@@ -18,13 +16,11 @@ public enum Health {
     /// Health of the torrent cannot be calcualted.
     case unknown
     
-    /**
-     - Bad:         Red.
-     - Medium:      Orange.
-     - Good:        Yellow-green.
-     - Excellent:   Bright green.
-     - Unknown:     Grey.
-     */
+    /// - Bad:         Red.
+    /// - Medium:      Orange.
+    /// - Good:        Yellow-green.
+    /// - Excellent:   Bright green.
+    /// - Unknown:     Grey.
     public var color: UIColor {
         switch self {
         case .bad:

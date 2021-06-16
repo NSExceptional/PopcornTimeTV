@@ -17,20 +17,16 @@ public class ThemeSongManager: NSObject, AVAudioPlayerDelegate {
     /// Creates new instance of ThemeSongManager class
     public static let shared: ThemeSongManager = ThemeSongManager()
     
-    /**
-     Starts playing TV Show theme music.
-     
-     - Parameter id: TVDB id of the show.
-     */
+    /// Starts playing TV Show theme music.
+    /// 
+    /// - Parameter id: TVDB id of the show.
     public func playShowTheme(_ id: Int) {
         playTheme("http://tvthemes.plexapp.com/\(id).mp3")
     }
     
-    /**
-     Starts playing Movie theme music.
-     
-     - Parameter name: The name of the movie.
-     */
+    /// Starts playing Movie theme music.
+    /// 
+    /// - Parameter name: The name of the movie.
     public func playMovieTheme(_ name: String) {
         Alamofire.request("https://itunes.apple.com/search", parameters: ["term": "\(name) soundtrack", "media": "music", "attribute": "albumTerm", "limit": 1]).validate().responseJSON { (response) in
             guard let response = response.result.value else { return }
@@ -39,11 +35,9 @@ public class ThemeSongManager: NSObject, AVAudioPlayerDelegate {
         }
     }
     
-    /**
-     Starts playing theme music from URL.
-     
-     - Parameter url: Valid url pointing to a track.
-     */
+    /// Starts playing theme music from URL.
+    /// 
+    /// - Parameter url: Valid url pointing to a track.
     private func playTheme(_ url: String) {
         if let player = player, player.isPlaying { player.stop() }
         

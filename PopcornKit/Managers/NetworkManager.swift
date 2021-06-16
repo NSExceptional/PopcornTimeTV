@@ -46,13 +46,11 @@ public struct Trakt {
         case episodes = "episodes"
         case people = "people"
     }
-    /**
-     Watched status of media.
-     
-     - .watching:   When the video intially starts playing or is unpaused.
-     - .paused:     When the video is paused.
-     - .finished:   When the video is stopped or finishes playing on its own.
-     */
+    /// Watched status of media.
+    /// 
+    /// - .watching:   When the video intially starts playing or is unpaused.
+    /// - .paused:     When the video is paused.
+    /// - .finished:   When the video is stopped or finishes playing on its own.
     public enum WatchedStatus: String {
         /// When the video intially starts playing or is unpaused.
         case watching = "start"

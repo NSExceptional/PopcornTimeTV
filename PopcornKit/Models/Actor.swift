@@ -3,9 +3,7 @@
 import Foundation
 import ObjectMapper
 
-/**
- Struct for managing actor objects.
- */
+/// Struct for managing actor objects.
 public struct Actor: Person, Equatable {
     
     /// Name of the actor.

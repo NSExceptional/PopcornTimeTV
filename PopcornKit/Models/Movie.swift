@@ -4,13 +4,11 @@ import Foundation
 import ObjectMapper
 import MediaPlayer.MPMediaItem
 
-/**
- Struct for managing Movie objects.
- 
- **Important:** In the description of all the optional variables where it says another method must be called on **only** `MovieManager` to populate x, does not apply if the movie was loaded from Trakt. **However**, no torrent metadata will be retrieved when movies are loaded from Trakt. They will need to be retrieved by calling `getInfo:imdbId:completion` on `MovieManager`.
- 
- `TraktManager` has to be called regardless to fill up the special variables.
- */
+/// Struct for managing Movie objects.
+///
+/// **Important:** In the description of all the optional variables where it says another method must be called on **only** `MovieManager` to populate x, does not apply if the movie was loaded from Trakt. **However**, no torrent metadata will be retrieved when movies are loaded from Trakt. They will need to be retrieved by calling `getInfo:imdbId:completion` on `MovieManager`.
+///
+/// `TraktManager` has to be called regardless to fill up the special variables.
 public struct Movie: Media, Equatable {
     
     /// Imdb id of the movie.

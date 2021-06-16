@@ -4,13 +4,10 @@ import Foundation
 
 extension Array where Element: Hashable {
     
-    /**
-     Remove duplicates from an array while preserving the order. Array elements must conform to protocol, `Hashable`
-     
-     - Parameter source: The array.
-     
-     - Returns: A copy of the array, made unique.
-     */
+    /// Remove duplicates from an array while preserving the order. Array elements must conform to protocol, `Hashable`
+    /// 
+    /// - Parameter source: The array.
+    /// - Returns: A copy of the array, made unique.
     var uniqued: Array {
         var buffer = [Element]()
         var added = Set<Element>()
@@ -27,24 +24,18 @@ extension Array where Element: Hashable {
         self = uniqued
     }
     
-    /**
-     Returns a new array containing the elements of the previous array plus the passed in items. Non mutating.
-     
-     - Parameter items: The items you wish to have appended to a `mutableCopy()` of `self`.
-     
-     - Returns: A new array with the items appended.
-     */
+    /// Returns a new array containing the elements of the previous array plus the passed in items. Non mutating.
+    /// 
+    /// - Parameter items: The items you wish to have appended to a `mutableCopy()` of `self`.
+    /// - Returns: A new array with the items appended.
     func appending(_ items: Element...) -> [Element] {
         return appending(items)
     }
     
-    /**
-     Returns a new array containing the elements of the previous array plus the passed in items. Non mutating.
-     
-     - Parameter items: The items you wish to have appended to a `mutableCopy()` of `self`.
-     
-     - Returns: A new array with the items appended.
-     */
+    /// Returns a new array containing the elements of the previous array plus the passed in items. Non mutating.
+    /// 
+    /// - Parameter items: The items you wish to have appended to a `mutableCopy()` of `self`.
+    /// - Returns: A new array with the items appended.
     func appending(_ items: [Element]) -> [Element] {
         var new = self
         new.append(contentsOf: items)

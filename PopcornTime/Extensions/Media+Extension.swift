@@ -7,19 +7,17 @@ import MediaPlayer.MPMediaItem
 
 extension Media {
     
-    /**
-     Start playing movie or episode locally.
-     
-     - Parameter fromFileOrMagnetLink:  The url pointing to a .torrent file, a web adress pointing to a .torrent file to be downloaded or a magnet link.
-     - Parameter nextEpisodeInSeries:   If media is an episode, pass in the next episode of the series, if applicable, for a better UX for the user.
-     - Parameter loadingViewController: The view controller that will be presented while the torrent is processing to display updates to the user.
-     - Parameter playViewController:    View controller to be presented to start playing the movie when loading is complete.
-     - Parameter progress:              The users playback progress for the current media.
-     - Parameter loadingBlock:          Block that handels updating loadingViewController UI. Defaults to updaing the progress of buffering, download speed and number of seeds.
-     - Parameter playBlock:             Block that handels setting up playViewController. If playViewController is a subclass of PCTPlayerViewController, default behaviour is to call `play:fromURL:progress:directory` on playViewController.
-     - Parameter errorBlock:            Block thats called when the request fails or torrent fails processing/downloading with error message parameter.
-     - Parameter finishedLoadingBlock:  Block thats called when torrent is finished loading.
-     */
+    /// Start playing movie or episode locally.
+    /// 
+    /// - Parameter fromFileOrMagnetLink:  The url pointing to a .torrent file, a web adress pointing to a .torrent file to be downloaded or a magnet link.
+    /// - Parameter nextEpisodeInSeries:   If media is an episode, pass in the next episode of the series, if applicable, for a better UX for the user.
+    /// - Parameter loadingViewController: The view controller that will be presented while the torrent is processing to display updates to the user.
+    /// - Parameter playViewController:    View controller to be presented to start playing the movie when loading is complete.
+    /// - Parameter progress:              The users playback progress for the current media.
+    /// - Parameter loadingBlock:          Block that handels updating loadingViewController UI. Defaults to updaing the progress of buffering, download speed and number of seeds.
+    /// - Parameter playBlock:             Block that handels setting up playViewController. If playViewController is a subclass of PCTPlayerViewController, default behaviour is to call `play:fromURL:progress:directory` on playViewController.
+    /// - Parameter errorBlock:            Block thats called when the request fails or torrent fails processing/downloading with error message parameter.
+    /// - Parameter finishedLoadingBlock:  Block thats called when torrent is finished loading.
     func play(
         fromFileOrMagnetLink url: String,
         nextEpisodeInSeries nextEpisode: Episode? = nil,
@@ -83,18 +81,16 @@ extension Media {
     
     #if os(iOS)
     
-    /**
-     Start playing movie or episode on chromecast.
-     
-     - Parameter fromFileOrMagnetLink:  The url pointing to a .torrent file, a web adress pointing to a .torrent file to be downloaded or a magnet link.
-     - Parameter loadingViewController: The view controller that will be presented while the torrent is processing to display updates to the user.
-     - Parameter playViewController:    View controller to be presented to handle controlling cast UI.
-     - Parameter progress:              The users playback progress for the current media.
-     - Parameter loadingBlock:          Block that handels updating loadingViewController UI. Defaults to updaing the progress of buffering, download speed and number of seeds.
-     - Parameter playBlock:             Block that handels setting up playViewController. If playViewController is a subclass of CastPlayerViewController, default behaviour is to setup UI.
-     - Parameter errorBlock:            Block thats called when the request fails or torrent fails processing/downloading with error message parameter.
-     - Parameter finishedLoadingBlock:  Block thats called when torrent is finished loading.
-     */
+    /// Start playing movie or episode on chromecast.
+    /// 
+    /// - Parameter fromFileOrMagnetLink:  The url pointing to a .torrent file, a web adress pointing to a .torrent file to be downloaded or a magnet link.
+    /// - Parameter loadingViewController: The view controller that will be presented while the torrent is processing to display updates to the user.
+    /// - Parameter playViewController:    View controller to be presented to handle controlling cast UI.
+    /// - Parameter progress:              The users playback progress for the current media.
+    /// - Parameter loadingBlock:          Block that handels updating loadingViewController UI. Defaults to updaing the progress of buffering, download speed and number of seeds.
+    /// - Parameter playBlock:             Block that handels setting up playViewController. If playViewController is a subclass of CastPlayerViewController, default behaviour is to setup UI.
+    /// - Parameter errorBlock:            Block thats called when the request fails or torrent fails processing/downloading with error message parameter.
+    /// - Parameter finishedLoadingBlock:  Block thats called when torrent is finished loading.
     func playOnChromecast(
         fromFileOrMagnetLink url: String,
         loadingViewController: PreloadTorrentViewController,
@@ -129,13 +125,11 @@ extension Media {
     }
     #endif
     
-    /**
-     Retrieves subtitles from OpenSubtitles
-     
-     - Parameter id:    `nil` by default. The imdb id of the media will be used by default.
-     
-     - Parameter completion: The completion handler for the request containing an array of subtitles
-     */
+    /// Retrieves subtitles from OpenSubtitles
+    /// 
+    /// - Parameter id:    `nil` by default. The imdb id of the media will be used by default.
+    /// 
+    /// - Parameter completion: Returns an array of subtitles
     func getSubtitles(forId id: String? = nil, orWithFilePath: URL? = nil, forLang:String? = nil,completion: @escaping (Dictionary<String, [Subtitle]>) -> Void) {
         let id = id ?? self.id
         if let filePath = orWithFilePath {

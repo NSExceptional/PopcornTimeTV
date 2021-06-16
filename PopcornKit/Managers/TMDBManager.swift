@@ -9,15 +9,15 @@ open class TMDBManager: NetworkManager {
     /// Creates new instance of TMDBManager class
     public static let shared = TMDBManager()
     
-    /**
-     Load movie posters from TMDB. Either a tmdb id or an imdb id must be passed in.
-     
-     - Parameter forMediaOfType:    The type of the media, either movie or show.
-     - Parameter withImdbId:        The imdb id of the media. If media hasn't get recieved it's tmdb id it will be requested using this imdb id.
-     - Parameter orTMDBId:          The tmdb id of the media.
-     
-     - Parameter completion:        The completion handler for the request containing an optional tmdb id, largeImageUrl and an optional error.
-     */
+    /// Load movie posters from TMDB. Either a tmdb id or an imdb id must be passed in.
+    /// 
+    /// - Parameter forMediaOfType: The type of the media, either movie or show.
+    /// - Parameter withImdbId:     The imdb id of the media. If media hasn't yet recieved
+    ///                             it's tmdb id it will be requested using this imdb id.
+    /// - Parameter orTMDBId:       The tmdb id of the media.
+    /// 
+    /// - Parameter completion:     Returns an optional
+    ///                             tmdb id, and largeImageUrl.
     open func getPoster(forMediaOfType type: TMDB.MediaType, withImdbId imdb: String? = nil, orTMDBId tmdb: Int? = nil, completion: @escaping (Int?, String?, NSError?) -> Void) {
         
         guard let id = tmdb else {
@@ -42,15 +42,14 @@ open class TMDBManager: NetworkManager {
         }
     }
     
-    /**
-     Load season posters from TMDB. Either a tmdb id or an imdb id must be passed in.
-     
-     - Parameter ofShowWithImdbId:  The imdb id of the show. If show hasn't get recieved it's tmdb id it will be requested using this imdb id.
-     - Parameter orTMDBId:          The tmdb id of the show.
-     - Parameter season:            The season of the show.
-     
-     - Parameter completion:    The completion handler for the request containing an optional tmdb id, image and an optional error.
-     */
+    /// Load season posters from TMDB. Either a tmdb id or an imdb id must be passed in.
+    /// 
+    /// - Parameter ofShowWithImdbId:  The imdb id of the show. If show hasn't yet recieved
+    ///                                it's tmdb id it will be requested using this imdb id.
+    /// - Parameter orTMDBId:          The tmdb id of the show.
+    /// - Parameter season:            The season of the show.
+    /// 
+    /// - Parameter completion:    Returns an optional tmdb id, and image.
     open func getSeasonPoster(ofShowWithImdbId imdb: String? = nil, orTMDBId tmdb: Int? = nil, season: Int, completion: @escaping (Int?, String?, NSError?) -> Void) {
         
         guard let id = tmdb else {
@@ -74,16 +73,15 @@ open class TMDBManager: NetworkManager {
         }
     }
     
-    /**
-     Load episode screenshots from TMDB. Either a tmdb id or an imdb id must be passed in.
-     
-     - Parameter forShowWithImdbId: The imdb id of the show that the episode is in. If show hasn't get recieved it's tmdb id it will be requested using this imdb id.
-     - Parameter orTMDBId:          The tmdb id of the show.
-     - Parameter season:            The season number of the episode.
-     - Parameter episode:           The episode number of the episode.
-     
-     - Parameter completion:        The completion handler for the request containing an optional tmdb id, largeImageUrl and an optional error.
-     */
+    /// Load episode screenshots from TMDB. Either a tmdb id or an imdb id must be passed in.
+    /// 
+    /// - Parameter forShowWithImdbId: The imdb id of the show that the episode is in. If the show
+    ///                                hasn't yet recieved its tmdb id it will be requested using this imdb id.
+    /// - Parameter orTMDBId:          The tmdb id of the show.
+    /// - Parameter season:            The season number of the episode.
+    /// - Parameter episode:           The episode number of the episode.
+    /// 
+    /// - Parameter completion:        Returns an optional tmdb id, and largeImageUrl.
     open func getEpisodeScreenshots(forShowWithImdbId imdb: String? = nil, orTMDBId tmdb: Int? = nil, season: Int, episode: Int, completion: @escaping (Int?, String?, NSError?) -> Void) {
         
         guard let id = tmdb else {
@@ -107,14 +105,13 @@ open class TMDBManager: NetworkManager {
         }
     }
     
-    /**
-     Load character headshots from TMDB. Either a tmdb id or an imdb id must be passed in.
-     
-     - Parameter forPersonWithImdbId:   The imdb id of the person. If character hasn't get recieved it's tmdb id it will be requested using this imdb id.
-     - Parameter orTMDBId:              The tmdb id of the person.
-     
-     - Parameter completion:            The completion handler for the request containing an optional tmdb id, largeImageUrl and an optional error.
-     */
+    /// Load character headshots from TMDB. Either a tmdb id or an imdb id must be passed in.
+    /// 
+    /// - Parameter forPersonWithImdbId: The imdb id of the person. If the character hasn't yet
+    ///                                  recieved its tmdb id it will be requested using this imdb id.
+    /// - Parameter orTMDBId:            The tmdb id of the person.
+    /// 
+    /// - Parameter completion:          Returns an optional tmdb id, and largeImageUrl.
     open func getCharacterHeadshots(forPersonWithImdbId imdb: String? = nil, orTMDBId tmdb: Int? = nil, completion: @escaping (Int?, String?, NSError?) -> Void) {
         
         guard let id = tmdb else {
@@ -138,14 +135,12 @@ open class TMDBManager: NetworkManager {
         }
     }
     
-    /**
-     Load Movie or TV Show logos from Fanart.tv.
-     
-     - Parameter forMediaOfType:    The type of the media. Only available for movies and shows.
-     - Parameter id:                The imdb id of the movie or the tvdb id of the show.
-     
-     - Parameter completion:        The completion handler for the request containing an optional image and an optional error.
-     */
+    /// Load Movie or TV Show logos from Fanart.tv.
+    /// 
+    /// - Parameter forMediaOfType:    The type of the media. Only available for movies and shows.
+    /// - Parameter id:                The imdb id of the movie or the tvdb id of the show.
+    /// 
+    /// - Parameter completion:        Returns an optional image.
     open func getLogo(forMediaOfType type: Trakt.MediaType, id: String, completion: @escaping (String?, NSError?) -> Void) {
         self.manager.request(Fanart.base + (type == .movies ? Fanart.movies : Fanart.tv) + "/\(id)", parameters: Fanart.defaultParameters).validate().responseJSON { (response) in
             guard let value = response.result.value else { completion(nil, response.result.error as NSError?); return }

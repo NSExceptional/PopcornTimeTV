@@ -4,13 +4,11 @@ import Foundation
 import ObjectMapper
 import MediaPlayer.MPMediaItem
 
-/**
- Struct for managing show objects. 
- 
- **Important:** In the description of all the optional variables where it says another method must be called on **only** `ShowManager` to populate `x`, does not apply if the show was loaded from Trakt. **However** episodes array will be empty for both Trakt and popcorn-api show objects.
- 
- `TraktManager` has to be called regardless to fill up the special variables.
- */
+/// Struct for managing show objects. 
+///
+/// **Important:** In the description of all the optional variables where it says another method must be called on **only** `ShowManager` to populate `x`, does not apply if the show was loaded from Trakt. **However** episodes array will be empty for both Trakt and popcorn-api show objects.
+///
+/// `TraktManager` has to be called regardless to fill up the special variables.
 public struct Show: Media, Equatable {
     
     /// Imdb id of show.

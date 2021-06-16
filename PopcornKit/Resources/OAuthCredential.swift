@@ -11,11 +11,11 @@ enum OAuthGrantType: String {
     case Refresh = "refresh_token"
 }
 
-/**
- `OAuthCredential` models the credentials returned from an OAuth server, storing the token type, access & refresh tokens, and whether the token is expired.
- 
- OAuth credentials can be stored in the user's keychain, and retrieved on subsequent launches.
- */
+
+/// `OAuthCredential` models the credentials returned from an OAuth server, storing the token type,
+/// access & refresh tokens, and whether the token is expired.
+///
+/// OAuth credentials can be stored in the user's keychain, and retrieved on subsequent launches.
 class OAuthCredential: NSObject, NSCoding {
     
     /// Service name for storing the credential.
@@ -43,33 +43,30 @@ class OAuthCredential: NSObject, NSCoding {
     /// The expiration date of the credential.
     var expiration: Date?
     
-    /**
-     Initializes an OAuth credential from a token string, with a specified type.
-     
-     - Parameter token: The OAuth token string.
-     - Parameter type:  The OAuth token type.
-     */
+    /// Initializes an OAuth credential from a token string, with a specified type.
+    /// 
+    /// - Parameter token: The OAuth token string.
+    /// - Parameter type:  The OAuth token type.
     required init(token: String, tokenType: String) {
         self.accessToken = token
         self.tokenType = tokenType
         super.init()
     }
     
-    /**
-     Creates an OAuth credential from the specified URL string, username, password and scope. 
-     
-     - Important: It is recommended that this function would be run on a background thread to stop UI from locking up..
-     
-     - Parameter url:                       The URL string used to create the request URL.
-     - Parameter username:                  The username used for authentication.
-     - Parameter password:                  The password used for authentication.
-     - Parameter scope:                     The authorization scope.
-     - Parameter clientID:                  Your client ID for the service.
-     - Parameter clientSecret:              Your client secret for the service.
-     - Parameter useBasicAuthentication:    Whether you want to send your client ID and client secret as parameters or headers. Defaults to true.
-     
-     - Throws: Error if request fails
-     */
+    /// Creates an OAuth credential from the specified URL string, username, password and scope. 
+    /// 
+    /// - Important: It is recommended that this function would be run on a background thread to stop UI from locking up.
+    /// 
+    /// - Parameter url:                    The URL string used to create the request URL.
+    /// - Parameter username:               The username used for authentication.
+    /// - Parameter password:               The password used for authentication.
+    /// - Parameter scope:                  The authorization scope.
+    /// - Parameter clientID:               Your client ID for the service.
+    /// - Parameter clientSecret:           Your client secret for the service.
+    /// - Parameter useBasicAuthentication: Whether you want to send your client ID and client
+    ///                                     secret as parameters or headers. Defaults to true.
+    /// 
+    /// - Throws: Error if request fails
     convenience init(
         _ url: String,
         username: String,
@@ -86,19 +83,19 @@ class OAuthCredential: NSObject, NSCoding {
         try self.init(url, parameters: params as [String : AnyObject], clientID: clientID, clientSecret: clientSecret, useBasicAuthentication: useBasicAuthentication)
     }
     
-    /**
-     Refreshes the OAuth token for the specified URL string, username, password and scope. 
-     
-     - Important: It is recommended that this function would be run on a background thread to stop UI from locking up..
-     
-     - Parameter url:                       The URL string used to create the request URL.
-     - Parameter refreshToken:              The refresh token returned from the authorization code exchange.
-     - Parameter clientID:                  Your client ID for the service.
-     - Parameter clientSecret:              Your client secret for the service.
-     - Parameter useBasicAuthentication:    Whether you want to send your client ID and client secret as parameters or headers. Defaults to true.
-     
-     - Throws: Error if request fails.
-     */
+    /// Refreshes the OAuth token for the specified URL string, username, password and scope. 
+    /// 
+    /// - Important: It is recommended that this function would be
+    ///              run on a background thread to stop UI from locking up.
+    /// 
+    /// - Parameter url:                    The URL string used to create the request URL.
+    /// - Parameter refreshToken:           The refresh token returned from the authorization code exchange.
+    /// - Parameter clientID:               Your client ID for the service.
+    /// - Parameter clientSecret:           Your client secret for the service.
+    /// - Parameter useBasicAuthentication: Whether you want to send your client ID and client
+    ///                                     secret as parameters or headers. Defaults to true.
+    /// 
+    /// - Throws: Error if request fails.
     convenience init(
         _ url: String,
         refreshToken: String,
@@ -110,20 +107,19 @@ class OAuthCredential: NSObject, NSCoding {
         try self.init(url, parameters: params as [String : AnyObject], clientID: clientID, clientSecret: clientSecret, useBasicAuthentication: useBasicAuthentication)
     }
     
-    /**
-     Creates an OAuth credential from the specified URL string, code. 
-     
-     - Important: It is recommended that this function would be run on a background thread to stop UI from locking up..
-     
-     - Parameter url:                       The URL string used to create the request URL.
-     - Parameter code:                      The authorization code.
-     - Parameter redirectURI:               The URI to redirect to after successful authentication.
-     - Parameter clientID:                  Your client ID for the service.
-     - Parameter clientSecret:              Your client secret for the service.
-     - Parameter useBasicAuthentication:    Whether you want to send your client ID and client secret as parameters or headers. Defaults to true.
-     
-     - Throws: Error if request fails
-     */
+    /// Creates an OAuth credential from the specified URL string, code. 
+    /// 
+    /// - Important: It is recommended that this function would be run on a background thread to stop UI from locking up..
+    /// 
+    /// - Parameter url:                    The URL string used to create the request URL.
+    /// - Parameter code:                   The authorization code.
+    /// - Parameter redirectURI:            The URI to redirect to after successful authentication.
+    /// - Parameter clientID:               Your client ID for the service.
+    /// - Parameter clientSecret:           Your client secret for the service.
+    /// - Parameter useBasicAuthentication: Whether you want to send your client ID and client
+    ///                                     secret as parameters or headers. Defaults to true.
+    /// 
+    /// - Throws: Error if request fails
     convenience init(
         _ url: String,
         code: String,
@@ -136,19 +132,18 @@ class OAuthCredential: NSObject, NSCoding {
         try self.init(url, parameters: params as [String : AnyObject], clientID: clientID, clientSecret: clientSecret, useBasicAuthentication: useBasicAuthentication)
     }
     
-    /**
-     Creates an OAuth credential from the specified parameters.
-     
-     - Important: It is recommended that this function would be run on a background thread to stop UI from locking up.
-     
-     - Parameter url:                       The URL string used to create the request URL.
-     - Parameter parameters:                The parameters to be encoded and set in the request HTTP body.
-     - Parameter clientID:                  Your client ID for the service.
-     - Parameter clientSecret:              Your client secret for the service.
-     - Parameter useBasicAuthentication:    Whether you want to send your client ID and client secret as parameters or headers. Defaults to true.
-     
-     - Throws: Error if request fails
-     */
+    /// Creates an OAuth credential from the specified parameters.
+    /// 
+    /// - Important: It is recommended that this function would be run on a background thread to stop UI from locking up.
+    /// 
+    /// - Parameter url:                    The URL string used to create the request URL.
+    /// - Parameter parameters:             The parameters to be encoded and set in the request HTTP body.
+    /// - Parameter clientID:               Your client ID for the service.
+    /// - Parameter clientSecret:           Your client secret for the service.
+    /// - Parameter useBasicAuthentication: Whether you want to send your client ID and client
+    ///                                     secret as parameters or headers. Defaults to true.
+    /// 
+    /// - Throws: Error if request fails
     init(
         _ url: String,
         parameters: [String: Any],
@@ -197,27 +192,24 @@ class OAuthCredential: NSObject, NSCoding {
         if error != nil { throw error!}
     }
     
-    /**
-     Sets the credential refresh token, with a specified expiration.
-     
-     - Parameter refreshToken:  The OAuth refresh token.
-     - Parameter expiration:    The expiration of the access token.
-     */
+    /// Sets the credential refresh token, with a specified expiration.
+    /// 
+    /// - Parameter refreshToken:  The OAuth refresh token.
+    /// - Parameter expiration:    The expiration of the access token.
     func setRefreshToken(_ refreshToken: String, expiration: Date) {
         self.refreshToken = refreshToken
         self.expiration = expiration
     }
     
-    /**
-     Stores the specified OAuth credential for a given web service identifier in the Keychain.
-     with the default Keychain Accessibilty of kSecAttrAccessibleWhenUnlocked.
-     
-     - Parameter credential:            The OAuth credential to be stored.
-     - Parameter identifier:            The service identifier associated with the specified token.
-     - Parameter securityAccessibility: The Keychain security accessibility to store the credential with default Keychain Accessibilty of kSecAttrAccessibleWhenUnlocked.
-     
-     - Throws: Error if storing credential fails.
-     */
+    /// Stores the specified OAuth credential for a given web service identifier in the Keychain.
+    /// with the default Keychain Accessibilty of kSecAttrAccessibleWhenUnlocked.
+    /// 
+    /// - Parameter credential:            The OAuth credential to be stored.
+    /// - Parameter identifier:            The service identifier associated with the specified token.
+    /// - Parameter securityAccessibility: The Keychain security accessibility to store the credential
+    ///                                    with default Keychain Accessibilty of kSecAttrAccessibleWhenUnlocked.
+    /// 
+    /// - Throws: Error if storing credential fails.
     func store(
         withIdentifier identifier: String,
         accessibility: AnyObject = kSecAttrAccessibleWhenUnlocked
@@ -225,13 +217,11 @@ class OAuthCredential: NSObject, NSCoding {
         return try Locksmith.updateData(data: ["credential": NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false)], forUserAccount: identifier, inService: OAuthCredential.service)
     }
     
-    /**
-     Retrieves the OAuth credential stored with the specified service identifier from the Keychain.
-     
-     - Parameter identifier: The service identifier associated with the specified credential.
-     
-     - Returns: The OAuthCredential if it existed, `nil` otherwise.
-     */
+    /// Retrieves the OAuth credential stored with the specified service identifier from the Keychain.
+    /// 
+    /// - Parameter identifier: The service identifier associated with the specified credential.
+    /// 
+    /// - Returns: The OAuthCredential if it existed, `nil` otherwise.
     init?(identifier: String) {
         
         guard let result = Locksmith.loadDataForUserAccount(userAccount: identifier, inService: OAuthCredential.service)?["credential"] as? Data, let credential = try? NSKeyedUnarchiver.unarchivedObject(ofClass: OAuthCredential.self, from: result) else { return nil }
@@ -243,13 +233,11 @@ class OAuthCredential: NSObject, NSCoding {
         super.init()
     }
     
-    /**
-     Deletes the OAuth credential stored with the specified service identifier from the Keychain.
-     
-     - Parameter identifier: The service identifier associated with the specified credential.
-     
-      - Throws: Error if deleting the credential fails.
-     */
+    /// Deletes the OAuth credential stored with the specified service identifier from the Keychain.
+    /// 
+    /// - Parameter identifier: The service identifier associated with the specified credential.
+    /// 
+    ///  - Throws: Error if deleting the credential fails.
     class func delete(withIdentifier identifier: String) throws {
         return try Locksmith.deleteDataForUserAccount(userAccount: identifier, inService: service)
     }

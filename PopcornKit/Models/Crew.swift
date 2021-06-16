@@ -3,9 +3,7 @@
 import Foundation
 import ObjectMapper
 
-/**
- Struct for managing crew objects.
- */
+/// Struct for managing crew objects.
 public struct Crew: Person, Equatable {
     
     /// Name of the person.

@@ -4,18 +4,15 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 
-/**
- A manager class that automatically looks for new releases from github and presents them to the user.
- */
+/// A manager class that automatically looks for new releases
+/// from github and presents them to the user.
 public final class UpdateManager: NSObject {
     
-    /**
-     Determines the frequency in which the the version check is performed.
-     
-     - .immediately:    Version check performed every time the app is launched.
-     - .daily:          Version check performedonce a day.
-     - .weekly:         Version check performed once a week.
-     */
+    /// Determines the frequency in which the the version check is performed.
+    /// 
+    /// - .immediately:    Version check performed every time the app is launched.
+    /// - .daily:          Version check performedonce a day.
+    /// - .weekly:         Version check performed once a week.
     public enum CheckType: Int {
         /// Version check performed every time the app is launched.
         case immediately = 0
@@ -31,7 +28,9 @@ public final class UpdateManager: NSObject {
     /// Designated Initialiser.
     public static let shared = UpdateManager()
     
-    /// The version that the user does not want installed. If the user has never clicked "Skip this version" this variable will be `nil`, otherwise it will be the last version that the user opted not to install.
+    /// The version that the user does not want installed. If the user has never clicked
+    /// "Skip this version" this variable will be `nil`, otherwise it will be the last
+    /// version that the user opted not to install.
     private var skipReleaseVersion: VersionString? {
         get {
             guard let data = UserDefaults.standard.data(forKey: "skipReleaseVersion") else { return nil }
@@ -64,11 +63,9 @@ public final class UpdateManager: NSObject {
         return components.day!
     }
     
-    /**
-     Checks github repository for new releases.
-     
-     - Parameter sucess: Optional callback indicating the status of the operation.
-     */
+    /// Checks github repository for new releases.
+    /// 
+    /// - Parameter sucess: Optional callback indicating the status of the operation.
     public func checkVersion(_ checkType: CheckType, completion: ((_ success: Bool) -> Void)? = nil) {
         if checkType == .immediately || checkType.rawValue <= daysSinceLastVersionCheckDate {
             checkForUpdates(completion)

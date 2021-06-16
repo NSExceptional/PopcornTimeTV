@@ -33,17 +33,15 @@ open class ShowManager: NetworkManager {
         }
     }
     
-    /**
-     Load TV Shows from API.
-     
-     - Parameter page:       The page number to load.
-     - Parameter filterBy:   Sort the response by Popularity, Year, Date Rating, Alphabet or Trending.
-     - Parameter genre:      Only return shows that match the provided genre.
-     - Parameter searchTerm: Only return shows that match the provided string.
-     - Parameter orderBy:    Ascending or descending.
-     
-     - Parameter completion: Completion handler for the request. Returns array of shows upon success, error upon failure.
-     */
+    /// Load TV Shows from API.
+    /// 
+    /// - Parameter page:       The page number to load.
+    /// - Parameter filterBy:   Sort the response by Popularity, Year, Date Rating, Alphabet or Trending.
+    /// - Parameter genre:      Only return shows that match the provided genre.
+    /// - Parameter searchTerm: Only return shows that match the provided string.
+    /// - Parameter orderBy:    Ascending or descending.
+    /// 
+    /// - Parameter completion: Returns array of shows upon success, error upon failure.
     open func load(
         _ page: Int,
         filterBy filter: Filters,
@@ -61,13 +59,11 @@ open class ShowManager: NetworkManager {
         }
     }
     
-    /**
-     Get more show information.
-     
-     - Parameter imdbId:        The imdb identification code of the show.
-     
-     - Parameter completion:    Completion handler for the request. Returns show upon success, error upon failure.
-     */
+    /// Get more show information.
+    /// 
+    /// - Parameter imdbId:        The imdb identification code of the show.
+    /// 
+    /// - Parameter completion:    Returns show upon success, error upon failure.
     open func getInfo(_ imdbId: String, completion: @escaping (Show?, NSError?) -> Void) {
             self.manager.request(PopcornShows.base + PopcornShows.show + "/\(imdbId)", method: .get).validate().responseJSON { response in
                 guard let value = response.result.value else {completion(nil, response.result.error as NSError?); return}

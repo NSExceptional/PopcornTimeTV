@@ -4,11 +4,9 @@ import Foundation
 import ObjectMapper
 import MediaPlayer.MPMediaItem
 
-/**
- Struct for managing episode objects.
- 
- **Important**: All images are `nil` unless episode was loaded from trakt. An image is obtained by calling `getEpisodeMetadata:showId:episodeNumber:seasonNumber:completion:` on `TraktManager`. Once image is obtained only the `largeBackgroundImage` variable should be set; the other two are computed and are not settable - they will be automatically updated once `largeBackgroundImage` is set.
- */
+/// Struct for managing episode objects.
+///
+/// **Important**: All images are `nil` unless episode was loaded from trakt. An image is obtained by calling `getEpisodeMetadata:showId:episodeNumber:seasonNumber:completion:` on `TraktManager`. Once image is obtained only the `largeBackgroundImage` variable should be set; the other two are computed and are not settable - they will be automatically updated once `largeBackgroundImage` is set.
 public struct Episode: Media, Equatable {
     
     /// The date of which the episode was first aired.

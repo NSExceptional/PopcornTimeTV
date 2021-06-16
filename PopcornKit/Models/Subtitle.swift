@@ -3,9 +3,7 @@
 import Foundation
 import ObjectMapper
 
-/**
-  Struct for managing subtitle objects.
- */
+///  Struct for managing subtitle objects.
 public struct Subtitle: Equatable,Mappable {
     
     /// Language string of the subtitle. Eg. English.

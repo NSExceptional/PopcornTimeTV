@@ -80,17 +80,15 @@ open class AnimeManager: NetworkManager {
         }
     }
     
-    /**
-     Load Anime from API.
-     
-     - Parameter page:       The page number to load.
-     - Parameter filterBy:   Sort the response by Popularity, Year, Date Rating, Alphabet or Trending.
-     - Parameter genre:      Only return anime that match the provided genre.
-     - Parameter searchTerm: Only return animes that match the provided string.
-     - Parameter orderBy:    Ascending or descending.
-     
-     - Parameter completion: Completion handler for the request. Returns array of animes upon success, error upon failure.
-     */
+    /// Load Anime from API.
+    /// 
+    /// - Parameter page:       The page number to load.
+    /// - Parameter filterBy:   Sort the response by Popularity, Year, Date Rating, Alphabet or Trending.
+    /// - Parameter genre:      Only return anime that match the provided genre.
+    /// - Parameter searchTerm: Only return animes that match the provided string.
+    /// - Parameter orderBy:    Ascending or descending.
+    /// 
+    /// - Parameter completion: Returns array of animes upon success, error upon failure.
     open func load(
         _ page: Int,
         filterBy filter: Filters,
@@ -108,13 +106,11 @@ open class AnimeManager: NetworkManager {
         }
     }
     
-    /**
-     Get more anime information.
-     
-     - Parameter id:            The identification code of the anime.
-     
-     - Parameter completion:    Completion handler for the request. Returns show upon success, error upon failure.
-     */
+    /// Get more anime information.
+    /// 
+    /// - Parameter id:            The identification code of the anime.
+    /// 
+    /// - Parameter completion:    Returns show upon success, error upon failure.
     open func getInfo(_ id: String, completion: @escaping (_ show: Show?, _ error: NSError?) -> Void) {
         self.manager.request(Popcorn.base + Popcorn.anime + "/\(id)").validate().responseJSON { response in
             guard let value = response.result.value else {completion(nil, response.result.error as NSError?); return}

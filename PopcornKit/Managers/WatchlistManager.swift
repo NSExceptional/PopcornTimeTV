@@ -42,20 +42,16 @@ open class WatchlistManager<N: Media> {
         }
     }
     
-    /**
-     Toggles media in users watchlist and syncs with Trakt if available.
-     
-     - Parameter media: The media to add or remove.
-     */
+    /// Toggles media in users watchlist and syncs with Trakt if available.
+    /// 
+    /// - Parameter media: The media to add or remove.
     open func toggle(_ media: N) {
         isAdded(media) ? remove(media): add(media)
     }
     
-    /**
-     Adds media to users watchlist and syncs with Trakt if available.
-     
-     - Parameter media: The media to add.
-     */
+    /// Adds media to users watchlist and syncs with Trakt if available.
+    /// 
+    /// - Parameter media: The media to add.
     open func add(_ media: N) {
         TraktManager.shared.add(media.id, toWatchlistOfType: currentType)
         var array = UserDefaults.standard.object(forKey: "\(currentType.rawValue)Watchlist") as? jsonArray ?? jsonArray()
@@ -63,11 +59,9 @@ open class WatchlistManager<N: Media> {
         UserDefaults.standard.set(array, forKey: "\(currentType.rawValue)Watchlist")
     }
     
-    /**
-     Removes media from users watchlist and syncs with Trakt if available.
-     
-     - Parameter media: The media to remove.
-     */
+    /// Removes media from users watchlist and syncs with Trakt if available.
+    /// 
+    /// - Parameter media: The media to remove.
     open func remove(_ media: N) {
         TraktManager.shared.remove(media.id, fromWatchlistOfType: currentType)
         if var array = UserDefaults.standard.object(forKey: "\(currentType.rawValue)Watchlist") as? jsonArray,
@@ -77,13 +71,11 @@ open class WatchlistManager<N: Media> {
         }
     }
     
-    /**
-     Checks media is in the watchlist.
-     
-     - Parameter media: The media.
-     
-     - Returns: Boolean indicating if media is in the users watchlist.
-     */
+    /// Checks media is in the watchlist.
+    /// 
+    /// - Parameter media: The media.
+    /// 
+    /// - Returns: Boolean indicating if media is in the users watchlist.
     open func isAdded(_ media: N) -> Bool {
         if let array = UserDefaults.standard.object(forKey: "\(currentType.rawValue)Watchlist") as? jsonArray {
             return Mapper<N>().mapArray(JSONArray: array).contains(where: {$0.id == media.id})
@@ -91,13 +83,11 @@ open class WatchlistManager<N: Media> {
         return false
     }
     
-    /**
-     Gets watchlist locally first and then from Trakt if available.
-     
-     - Parameter completion: If Trakt is available, completion will be called with a more up-to-date watchlist that will replace the locally stored one and should be reloaded for the user.
-     
-     - Returns: Locally stored watchlist (may be out of date if user has authenticated with trakt).
-     */
+    /// Gets watchlist locally first and then from Trakt if available.
+    /// 
+    /// - Parameter completion: If Trakt is available, completion will be called with a more up-to-date watchlist that will replace the locally stored one and should be reloaded for the user.
+    /// 
+    /// - Returns: Locally stored watchlist (may be out of date if user has authenticated with trakt).
     @discardableResult open func getWatchlist(_ completion: (([N]) -> Void)? = nil) -> [N] {
         
             let array = UserDefaults.standard.object(forKey: "\(currentType.rawValue)Watchlist") as? jsonArray ?? jsonArray()

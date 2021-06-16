@@ -40,20 +40,16 @@ open class WatchedlistManager<N: Media & Hashable> {
         }
     }
     
-    /**
-     Toggles a users watched status on the passed in media id and syncs with Trakt if available.
-     
-     - Parameter id: The imdbId for movie or tvdbId for episode.
-     */
+    /// Toggles a users watched status on the passed in media id and syncs with Trakt if available.
+    /// 
+    /// - Parameter id: The imdbId for movie or tvdbId for episode.
     open func toggle(_ id: String) {
         isAdded(id) ? remove(id): add(id)
     }
     
-    /**
-     Adds movie or episode to watchedlist and syncs with Trakt if available.
-     
-     - Parameter id: The imdbId or tvdbId of the movie or episode.
-     */
+    /// Adds movie or episode to watchedlist and syncs with Trakt if available.
+    /// 
+    /// - Parameter id: The imdbId or tvdbId of the movie or episode.
     open func add(_ id: String) {
         TraktManager.shared.add(id, toWatchedlistOfType: currentType)
         var array = UserDefaults.standard.object(forKey: "\(currentType.rawValue)Watchedlist") as? [String] ?? [String]()
@@ -61,11 +57,9 @@ open class WatchedlistManager<N: Media & Hashable> {
         UserDefaults.standard.set(array, forKey: "\(currentType.rawValue)Watchedlist")
     }
     
-    /**
-     Removes movie or episode from a users watchedlist, sets its progress to 0.0 and syncs with Trakt if available.
-     
-     - Parameter id: The imdbId for movie or tvdbId for episode.
-     */
+    /// Removes movie or episode from a users watchedlist, sets its progress to 0.0 and syncs with Trakt if available.
+    /// 
+    /// - Parameter id: The imdbId for movie or tvdbId for episode.
     open func remove(_ id: String) {
         TraktManager.shared.remove(id, fromWatchedlistOfType: currentType)
         TraktManager.shared.scrobble(id, progress: 0, type: currentType, status: .finished)
@@ -80,13 +74,11 @@ open class WatchedlistManager<N: Media & Hashable> {
         
     }
     
-    /**
-     Checks if movie or episode is in the watchedlist.
-     
-     - Parameter id: The imdbId for movie or tvdbId for episode.
-     
-     - Returns: Boolean indicating if movie or episode is in watchedlist.
-     */
+    /// Checks if movie or episode is in the watchedlist.
+    /// 
+    /// - Parameter id: The imdbId for movie or tvdbId for episode.
+    /// 
+    /// - Returns: Boolean indicating if movie or episode is in watchedlist.
     open func isAdded(_ id: String) -> Bool {
         if let array = UserDefaults.standard.object(forKey: "\(currentType.rawValue)Watchedlist") as? [String] {
             return array.contains(id)
@@ -94,13 +86,11 @@ open class WatchedlistManager<N: Media & Hashable> {
         return false
     }
     
-    /**
-     Gets watchedlist locally first and then from Trakt.
-     
-     - Parameter completion: Called if local watchedlist was updated from trakt.
-     
-     - Returns: Locally stored watchedlist imdbId's (may be out of date if user has authenticated with trakt).
-     */
+    /// Gets watchedlist locally first and then from Trakt.
+    /// 
+    /// - Parameter completion: Called if local watchedlist was updated from trakt.
+    /// 
+    /// - Returns: Locally stored watchedlist imdbId's (may be out of date if user has authenticated with trakt).
     @discardableResult open func getWatched(completion: (([N]) -> Void)? = nil) -> [String] {
         DispatchQueue.global(qos: .background).async{
             TraktManager.shared.getWatched(forMediaOfType: N.self) { [unowned self] (medias, error) in
@@ -117,13 +107,11 @@ open class WatchedlistManager<N: Media & Hashable> {
         return watched
     }
     
-    /**
-     Stores movie progress and syncs with Trakt if available.
-     
-     - Parameter progress:  The progress of the playing video. Possible values range from 0...1.
-     - Parameter id:        The imdbId for movies and tvdbId for episodes of the media that is playing.
-     - Parameter status:    The status of the item.
-     */
+    /// Stores movie progress and syncs with Trakt if available.
+    /// 
+    /// - Parameter progress:  The progress of the playing video. Possible values range from 0...1.
+    /// - Parameter id:        The imdbId for movies and tvdbId for episodes of the media that is playing.
+    /// - Parameter status:    The status of the item.
     open func setCurrentProgress(_ progress: Float, for id: String, with status: Trakt.WatchedStatus) {
         progress <= 0.8 ? TraktManager.shared.scrobble(id, progress: progress, type: currentType, status: status) : ()
         var dict = UserDefaults.standard.object(forKey: "\(currentType.rawValue)Progress") as? [String: Float] ?? [String: Float]()
@@ -132,15 +120,13 @@ open class WatchedlistManager<N: Media & Hashable> {
         UserDefaults.standard.set(dict, forKey: "\(currentType.rawValue)Progress")
     }
     
-    /**
-     Retrieves latest progress from Trakt and updates local storage.
-     
-     - Important: Local watchedlist may be more up-to-date than Trakt version but local version will be replaced with Trakt version regardless.
-     
-     - Parameter completion: Optional completion handler called when progress has been retrieved from trakt. May never be called if user hasn't authenticated with Trakt.
-     
-     - Returns: Locally stored progress (may be out of date if user has authenticated with trakt).
-     */
+    /// Retrieves latest progress from Trakt and updates local storage.
+    /// 
+    /// - Important: Local watchedlist may be more up-to-date than Trakt version but local version will be replaced with Trakt version regardless.
+    /// 
+    /// - Parameter completion: Optional, called when progress has been retrieved from trakt. May never be called if user hasn't authenticated with Trakt.
+    /// 
+    /// - Returns: Locally stored progress (may be out of date if user has authenticated with trakt).
     @discardableResult open func getProgress(completion: (([N: Float]) -> Void)? = nil) -> [String: Float] {
         DispatchQueue.global(qos: .background).async{
             TraktManager.shared.getPlaybackProgress(forMediaOfType: N.self) { (dict, error) in
@@ -160,13 +146,11 @@ open class WatchedlistManager<N: Media & Hashable> {
         return progress
     }
     
-    /**
-     Gets watched progress for movie or epsiode.
-     
-     - Parameter id: The imdbId for movie or tvdbId for episode.
-     
-     - Returns: The users last play position progress from 0.0 to 1.0 (if any).
-     */
+    /// Gets watched progress for movie or epsiode.
+    /// 
+    /// - Parameter id: The imdbId for movie or tvdbId for episode.
+    /// 
+    /// - Returns: The users last play position progress from 0.0 to 1.0 (if any).
     open func currentProgress(_ id: String) -> Float {
         if let dict = UserDefaults.standard.object(forKey: "\(currentType.rawValue)Progress") as? [String: Float],
             let progress = dict[id] {
@@ -175,13 +159,11 @@ open class WatchedlistManager<N: Media & Hashable> {
         return 0.0
     }
     
-    /**
-     Retrieves media that the user is currently watching.
-     
-     - Parameter completion: Optional completion handler called when on deck media has been retrieved from trakt. May never be called if user hasn't authenticated with Trakt.
-     
-     - Returns: Locally stored on deck media id's (may be out of date if user has authenticated with trakt).
-     */
+    /// Retrieves media that the user is currently watching.
+    /// 
+    /// - Parameter completion: Optional, called when on deck media has been retrieved from trakt. May never be called if user hasn't authenticated with Trakt.
+    /// 
+    /// - Returns: Locally stored on deck media id's (may be out of date if user has authenticated with trakt).
     @discardableResult open func getOnDeck(completion: (([N]) -> Void)? = nil) -> [String] {
         let group = DispatchGroup()
         

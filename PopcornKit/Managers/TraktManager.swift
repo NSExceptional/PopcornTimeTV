@@ -20,16 +20,14 @@ open class TraktManager: NetworkManager {
     /// The delegate for the Trakt Authentication process.
     open weak var delegate: TraktManagerDelegate?
     
-    /**
-     Scrobbles current video.
-     
-     - Parameter id:            The imdbId for movies and tvdbId for episodes of the media that is playing.
-     - Parameter progress:      The progress of the playing video. Possible values range from 0...1.
-     - Parameter type:          The type of the item, either `Episode` or `Movie`.
-     - Parameter status:        The status of the item.
-     
-     - Parameter completion:    Optional completion handler only called if an error is thrown.
-     */
+    /// Scrobbles current video.
+    /// 
+    /// - Parameter id:            The imdbId for movies and tvdbId for episodes of the media that is playing.
+    /// - Parameter progress:      The progress of the playing video. Possible values range from 0...1.
+    /// - Parameter type:          The type of the item, either `Episode` or `Movie`.
+    /// - Parameter status:        The status of the item.
+    /// 
+    /// - Parameter completion:    Optional, only called if an error is thrown.
     open func scrobble(_ id: String, progress: Float, type: Trakt.MediaType, status: Trakt.WatchedStatus, completion: ((NSError) -> Void)? = nil) {
         guard var credential = OAuthCredential(identifier: "trakt") else { return }
         guard progress != 0 else { return removePlaybackProgress(id, type: type) }
@@ -53,15 +51,13 @@ open class TraktManager: NetworkManager {
         }
     }
     
-    /**
-     Load episode metadata from API.
-     
-     - Parameter show:          The imdbId or slug for the show.
-     - Parameter episodeNumber: The number of the episode in relation to its current season.
-     - Parameter seasonNumber:  The season of which the episode is in.
-     
-     - Parameter completion:    The completion handler for the request containing an optional episode and an optional error.
-     */
+    /// Load episode metadata from API.
+    /// 
+    /// - Parameter show:          The imdbId or slug for the show.
+    /// - Parameter episodeNumber: The number of the episode in relation to its current season.
+    /// - Parameter seasonNumber:  The season of which the episode is in.
+    /// 
+    /// - Parameter completion:    Returns an optional episode.
     open func getEpisodeMetadata(_ showId: String, episodeNumber: Int, seasonNumber: Int, completion: @escaping (Episode?, NSError?) -> Void) {
         self.manager.request(Trakt.base + Trakt.shows + "/\(showId)" + Trakt.seasons + "/\(seasonNumber)" + Trakt.episodes + "/\(episodeNumber)", parameters: Trakt.extended, headers: Trakt.Headers.Default).validate().responseJSON { response in
             guard let value = response.result.value else { completion(nil, response.result.error as NSError?); return }
@@ -69,13 +65,11 @@ open class TraktManager: NetworkManager {
         }
     }
     
-    /**
-     Retrieves users previously watched videos.
-     
-     - Parameter type:          The type of the item (either movie or episode).
-     
-     - Parameter completion:    The completion handler for the request containing an array of media objects and an optional error.
-     */
+    /// Retrieves users previously watched videos.
+    /// 
+    /// - Parameter type:          The type of the item (either movie or episode).
+    /// 
+    /// - Parameter completion:    Returns an array of media objects.
     open func getWatched<T: Media>(forMediaOfType type: T.Type, completion:@escaping ([T], NSError?) -> Void) {
         guard var credential = OAuthCredential(identifier: "trakt") else { return }
         DispatchQueue.global(qos: .userInitiated).async {
@@ -112,13 +106,11 @@ open class TraktManager: NetworkManager {
         }
     }
     
-    /**
-     Retrieves users playback progress of video if applicable.
-     
-     - Parameter type: The type of the item (either movie or episode).
-     
-     - Parameter completion: The completion handler for the request containing a dictionary of either imdbIds or tvdbIds depending on the type selected as keys and the users corrisponding watched progress as values and an optional error. Eg. ["tt1431045": 0.5] means you have watched half of Deadpool.
-     */
+    /// Retrieves users playback progress of video if applicable.
+    /// 
+    /// - Parameter type: The type of the item (either movie or episode).
+    /// 
+    /// - Parameter completion: Returns a dictionary of either imdbIds or tvdbIds depending on the type selected as keys and the users corrisponding watched progress as values. Eg. ["tt1431045": 0.5] means you have watched half of Deadpool.
     open func getPlaybackProgress<T: Media>(forMediaOfType type: T.Type, completion:@escaping ([T: Float], NSError?) -> Void) {
         guard var credential = OAuthCredential(identifier: "trakt") else { return }
         DispatchQueue.global(qos: .userInitiated).async {
@@ -168,13 +160,11 @@ open class TraktManager: NetworkManager {
         }
     }
     
-    /**
-     `Nil`s a users playback progress of a specified media. If `id` is invalid, 404 error will be thrown.
-     
-     - Parameter id: The imdbId of the movie or tvdbId of the episode.
-     
-     - Parameter completion: An optional completion handler called only if an error is thrown.
-     */
+    /// `Nil`s a users playback progress of a specified media. If `id` is invalid, 404 error will be thrown.
+    /// 
+    /// - Parameter id: The imdbId of the movie or tvdbId of the episode.
+    /// 
+    /// - Parameter completion: Optional, called only if an error is thrown.
     open func removePlaybackProgress(_ id: String, type: Trakt.MediaType, completion: ((NSError) -> Void)? = nil) {
         guard var credential = OAuthCredential(identifier: "trakt") else { return }
         DispatchQueue.global(qos: .background).async {
@@ -218,14 +208,12 @@ open class TraktManager: NetworkManager {
         }
     }
     
-    /**
-     Removes a movie or episode from a users watched history.
-     
-     - Parameter id:    The imdbId or tvdbId of the movie, episode or show.
-     - Parameter type:  The type of the item (movie or episode).
-     
-     - Parameter completion:    An optional completion handler called only if an error is thrown.
-     */
+    /// Removes a movie or episode from a users watched history.
+    /// 
+    /// - Parameter id:    The imdbId or tvdbId of the movie, episode or show.
+    /// - Parameter type:  The type of the item (movie or episode).
+    /// 
+    /// - Parameter completion:    Optional, called only if an error is thrown.
     open func remove(_ id: String, fromWatchedlistOfType type: Trakt.MediaType, completion: ((NSError) -> Void)? = nil) {
         guard var credential = OAuthCredential(identifier: "trakt") else { return }
         DispatchQueue.global(qos: .background).async {
@@ -250,14 +238,12 @@ open class TraktManager: NetworkManager {
         }
     }
     
-    /**
-     Adds specified media to users watch history.
-     
-     - Parameter id:    The imdbId or tvdbId of the media.
-     - Parameter type:  The type of the item.
-     
-     - Parameter completion: The completion handler for the request containing an optional error if the request fails.
-     */
+    /// Adds specified media to users watch history.
+    /// 
+    /// - Parameter id:    The imdbId or tvdbId of the media.
+    /// - Parameter type:  The type of the item.
+    /// 
+    /// - Parameter completion: Returns an optional error if the request fails.
     open func add(_ id: String, toWatchedlistOfType type: Trakt.MediaType, completion: ((NSError) -> Void)? = nil) {
         guard var credential = OAuthCredential(identifier: "trakt") else { return }
         DispatchQueue.global(qos: .background).async {
@@ -282,14 +268,12 @@ open class TraktManager: NetworkManager {
         }
     }
     
-    /**
-     Retrieves cast and crew information for a movie or show.
-     
-     - Parameter type:  The type of the item (movie or show).
-     - Parameter id:    The id of the movie or show.
-     
-     - Parameter completion: The completion handler for the request containing an array of actors, array of crews and an optional error.
-     */
+    /// Retrieves cast and crew information for a movie or show.
+    /// 
+    /// - Parameter type:  The type of the item (movie or show).
+    /// - Parameter id:    The id of the movie or show.
+    /// 
+    /// - Parameter completion: Returns an array of actors, array of crews.
     open func getPeople(forMediaOfType type: Trakt.MediaType, id: String, completion: @escaping ([Actor], [Crew], NSError?) -> Void) {
         self.manager.request(Trakt.base + "/\(type.rawValue)/\(id)" + Trakt.people, headers: Trakt.Headers.Default).validate().responseJSON { response in
             guard let value = response.result.value else { completion([Actor](), [Crew](), response.result.error as NSError?); return }
@@ -323,13 +307,11 @@ open class TraktManager: NetworkManager {
         }
     }
     
-    /**
-     Retrieves users watchlist.
-     
-     - Parameter type: The type struct of the item eg. `Movie` or `Show`. Episodes not supported
-     
-     - Parameter completion: The completion handler for the request containing an array of media that the user has added to their watchlist and an optional error.
-     */
+    /// Retrieves users watchlist.
+    /// 
+    /// - Parameter type: The type struct of the item eg. `Movie` or `Show`. Episodes not supported
+    /// 
+    /// - Parameter completion: Returns an array of media that the user has added to their watchlist.
     open func getWatchlist<T: Media>(forMediaOfType type: T.Type, completion:@escaping ([T], NSError?) -> Void) {
         guard var credential = OAuthCredential(identifier: "trakt") else { return }
         DispatchQueue.global(qos: .background).async {
@@ -371,14 +353,12 @@ open class TraktManager: NetworkManager {
         }
     }
     
-    /**
-     Adds specified media to users watchlist.
-     
-     - Parameter id:    The imdbId or tvdbId of the media.
-     - Parameter type:  The type of the item.
-     
-     - Parameter completion: The completion handler for the request containing an optional error if the request fails.
-     */
+    /// Adds specified media to users watchlist.
+    /// 
+    /// - Parameter id:    The imdbId or tvdbId of the media.
+    /// - Parameter type:  The type of the item.
+    /// 
+    /// - Parameter completion: Returns an optional error if the request fails.
     open func add(_ id: String, toWatchlistOfType type: Trakt.MediaType, completion: ((NSError) -> Void)? = nil) {
         guard var credential = OAuthCredential(identifier: "trakt") else { return }
         DispatchQueue.global(qos: .background).async {
@@ -401,14 +381,12 @@ open class TraktManager: NetworkManager {
         }
     }
     
-    /**
-     Removes specified media from users watchlist.
-     
-     - Parameter id:    The imdbId or tvdbId of the media.
-     - Parameter type:  The type of the item.
-     
-     - Parameter completion: The completion handler for the request containing an optional error if the request fails.
-     */
+    /// Removes specified media from users watchlist.
+    /// 
+    /// - Parameter id:    The imdbId or tvdbId of the media.
+    /// - Parameter type:  The type of the item.
+    /// 
+    /// - Parameter completion: Returns an optional error if the request fails.
     open func remove(_ id: String, fromWatchlistOfType type: Trakt.MediaType, completion: ((NSError) -> Void)? = nil) {
         guard var credential = OAuthCredential(identifier: "trakt") else { return }
         DispatchQueue.global(qos: .background).async {
@@ -431,13 +409,14 @@ open class TraktManager: NetworkManager {
         }
     }
     
-    /**
-     Retrieves related media.
-     
-     - Parameter media: The media you would like to get more information about. **Please note:** only the imdbdId is used but an object needs to be passed in for Swift generics to work so creating a blank object with only an imdbId variable initialised will suffice if necessary.
-     
-     - Parameter completion: The requests completion handler containing array of related movies and an optional error.
-     */
+    /// Retrieves related media.
+    /// 
+    /// - Parameter media: The media you would like to get more information about.
+    ///                    **Please note:** only the imdbdId is used but an object needs to be
+    ///                    passed in for Swift generics to work so creating a blank object with
+    ///                    only an imdbId variable initialised will suffice if necessary.
+    /// 
+    /// - Parameter completion: Returns an array of related movies.
     open func getRelated<T: Media>(_ media: T, completion: @escaping ([T], NSError?) -> Void) {
         self.manager.request(Trakt.base + (media is Movie ? Trakt.movies : Trakt.shows) + "/\(media.id)" + Trakt.related, parameters: Trakt.extended, headers: Trakt.Headers.Default).validate().responseJSON { response in
             guard let value = response.result.value else { completion([T](), response.result.error as NSError?); return }
@@ -457,14 +436,12 @@ open class TraktManager: NetworkManager {
         }
     }
     
-    /**
-     Retrieves movies or shows that the person in cast/crew in.
-     
-     - Parameter id:    The id of the person you would like to get more information about.
-     - Parameter type:  Just the type of the media is required for Swift generics to work.
-     
-     - Parameter completion:        The requests completion handler containing array of movies and an optional error.
-     */
+    /// Retrieves movies or shows that the person in cast/crew in.
+    /// 
+    /// - Parameter id:    The id of the person you would like to get more information about.
+    /// - Parameter type:  Just the type of the media is required for Swift generics to work.
+    /// 
+    /// - Parameter completion: Returns an array of movies.
     open func getMediaCredits<T: Media>(forPersonWithId id: String, mediaType type: T.Type, completion: @escaping ([T], NSError?) -> Void) {
         var typeString = (type is Movie.Type ? Trakt.movies : Trakt.shows)
         self.manager.request(Trakt.base + Trakt.people + "/\(id)" + typeString, parameters: Trakt.extended, headers: Trakt.Headers.Default).validate().responseJSON { response in
@@ -511,12 +488,10 @@ open class TraktManager: NetworkManager {
         }
     }
     
-    /**
-     Requests tmdb id for object with imdb id.
-     
-     - Parameter id:            Imdb id of object.
-     - Parameter completion:    Completion handler containing optional tmdb id and an optional error.
-     */
+    /// Requests tmdb id for object with imdb id.
+    /// 
+    /// - Parameter id:            Imdb id of object.
+    /// - Parameter completion:    Returns an optional tmdb id.
     open func getTMDBId(forImdbId id: String, completion: @escaping (Int?, NSError?) -> Void) {
         self.manager.request(Trakt.base + Trakt.search + Trakt.imdb + "/\(id)", headers: Trakt.Headers.Default).validate().responseJSON { (response) in
             guard let value = response.result.value else { completion(nil, response.result.error as NSError?); return }
@@ -529,13 +504,10 @@ open class TraktManager: NetworkManager {
         }
     }
     
-    /**
-     Requests episode info from tvdb.
-     
-     - Parameter id:            The tvdb identification code of the episode.
-     
-     - Parameter completion:    Completion handler for the request. Returns episode upon success, error upon failure.
-     */
+    /// Requests episode info from tvdb.
+    /// 
+    /// - Parameter id:            The tvdb identification code of the episode.
+    /// - Parameter completion:    Returns episode upon success, error upon failure.
     open func getEpisodeInfo(forTvdb id: Int, completion: @escaping (Episode?, NSError?) -> Void) {
         self.manager.request(Trakt.base + Trakt.search + Trakt.tvdb + "/\(id)", parameters:Trakt.extended, headers: Trakt.Headers.Default).validate().responseJSON { (response) in
             guard let value = response.result.value else { completion(nil, response.result.error as NSError?); return }
@@ -553,13 +525,10 @@ open class TraktManager: NetworkManager {
         }
     }
     
-    /**
-     Searches Trakt for people (crew or actor).
-     
-     - Parameter person:        The name of the person to search.
-     
-     - Parameter completion:    Completion handler for the request. Returns an array of people matching the passed in title, error upon failure.
-     */
+    /// Searches Trakt for people (crew or actor).
+    /// 
+    /// - Parameter person:        The name of the person to search.
+    /// - Parameter completion:    Returns an array of people matching the passed in title, error upon failure.
     open func search(forPerson person: String, completion: @escaping ([Person]?, NSError?) -> Void) {
         self.manager.request(Trakt.base + Trakt.search + Trakt.person, parameters: ["query": person], headers: Trakt.Headers.Default).validate().responseJSON { (response) in
             guard let value = response.result.value,
@@ -583,7 +552,9 @@ open class TraktManager: NetworkManager {
     }
 }
 
-/// When mapping to movies or shows from Trakt, the JSON is formatted differently to the Popcorn API. This struct is used to distinguish from which API the Media is being mapped from.
+/// When mapping to movies or shows from Trakt, the JSON is formatted
+/// differently than the Popcorn API. This struct is used to distinguish
+/// from which API the Media is being mapped from.
 struct TraktContext: MapContext {}
 
 
@@ -593,21 +564,17 @@ struct TraktContext: MapContext {}
     /// Called when a user has successfully logged in.
     @objc optional func authenticationDidSucceed()
     
-    /**
-     Called if a user cancels the auth process or if the requests fail.
-     
-     - Parameter error: The underlying error.
-     */
+    /// Called if a user cancels the auth process or if the requests fail.
+    /// 
+    /// - Parameter error: The underlying error.
     @objc optional func authenticationDidFail(with error: NSError)
 }
 
 extension TraktManager {
     
-    /**
-     First part of the Trakt authentication process.
-     
-     - Returns: A login view controller to be presented.
-     */
+    /// First part of the Trakt authentication process.
+    /// 
+    /// - Returns: A login view controller to be presented.
     public func loginViewController() -> UIViewController {
         #if os(iOS)
             state = .random(of: 15)
@@ -621,29 +588,27 @@ extension TraktManager {
         #endif
     }
     
-    /**
-     Logout of Trakt.
-     
-     - Returns: Boolean value indicating the sucess of the operation.
-     */
+    /// Logout of Trakt.
+    /// 
+    /// - Returns: Boolean value indicating the sucess of the operation.
     public func logout() throws {
         return try OAuthCredential.delete(withIdentifier: "trakt")
     }
     
-    /**
-     Checks if user is authenticated with trakt.
-     
-     - Returns: Boolean value indicating the signed in status of the user.
-     */
+    /// Checks if user is authenticated with trakt.
+    /// 
+    /// - Returns: Boolean value indicating the signed in status of the user.
     public func isSignedIn() -> Bool {
         return OAuthCredential(identifier: "trakt") != nil
     }
     
-    /**
-     Generate code to authenticate device on web.
-     
-     - Parameter completion: The completion handler for the request containing the code for the user to enter to the validation url (`https://trakt.tv/activate/authorize`), the code for the device to get the access token, the expiery date of the displat code and the time interval that the program is to check whether the user has authenticated and an optional error if request fails.
-     */
+    /// Generate code to authenticate device on web.
+    /// 
+    /// - Parameter completion: Returns the code for the user to enter to the validation url
+    ///                         (`https://trakt.tv/activate/authorize`), the code for the device
+    ///                         to get the access token, the expiery date of the displat code and
+    ///                         the time interval that the program is to check whether the user has
+    ///                         authenticated and an optional error if request fails.
     internal func generateCode(completion: @escaping (String?, String?, Date?, TimeInterval?, NSError?) -> Void) {
         self.manager.request(Trakt.base + Trakt.auth + Trakt.device + Trakt.code, method: .post, parameters: ["client_id": Trakt.apiKey]).validate().responseJSON { (response) in
             guard let value = response.result.value as? [String: AnyObject], let displayCode = value["user_code"] as? String, let deviceCode = value["device_code"] as? String, let expire = value["expires_in"] as? Int, let interval = value["interval"]  as? Int else { completion(nil, nil, nil, nil, response.result.error as NSError?); return }
@@ -651,11 +616,9 @@ extension TraktManager {
         }
     }
     
-    /**
-     Second part of the authentication process. Calls delegate upon completion.
-     
-     - Parameter url: The redirect URI recieved from step 1.
-     */
+    /// Second part of the authentication process. Calls delegate upon completion.
+    /// 
+    /// - Parameter url: The redirect URI recieved from step 1.
     public func authenticate(_ url: URL) {
         defer { state = nil }
         
