@@ -47,8 +47,16 @@ public class TraktAuthenticationViewController: UIViewController {
         } else if let deviceCode = deviceCode {
             DispatchQueue.global(qos: .default).async {
                 do {
-                    try OAuthCredential(Trakt.base + Trakt.auth + Trakt.device + Trakt.token, parameters: ["code": deviceCode], clientID: Trakt.apiKey, clientSecret: Trakt.apiSecret, useBasicAuthentication: false).store(withIdentifier: "trakt")
-                    DispatchQueue.global(qos: .background).sync {
+                    let url = Trakt.base + Trakt.auth + Trakt.device + Trakt.token
+                    try OAuthCredential(
+                        url,
+                        parameters: ["code": deviceCode],
+                        clientID: Trakt.apiKey,
+                        clientSecret: Trakt.apiSecret,
+                        useBasicAuthentication: false).store(withIdentifier: "trakt"
+                    )
+                    
+                    DispatchQueue.main.async {
                         TraktManager.shared.delegate?.authenticationDidSucceed?()
                     }
                 } catch { }

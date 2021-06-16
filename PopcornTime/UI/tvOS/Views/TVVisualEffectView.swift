@@ -8,7 +8,8 @@ import UIKit
         get {
             return blurEffect.value(forKey: "blurRadius") as? CGFloat ?? 90
         } set (radius) {
-            blurEffect.setValue(radius, forKey: "blurRadius")
+            // TODO: fucking hell
+//            blurEffect.setValue(radius, forKey: "blurRadius")
             effect = blurEffect
         }
     }
@@ -44,9 +45,11 @@ import UIKit
         let style = UIBlurEffect.Style(rawValue: raw)!
 
         let effect = UICustomBlurEffect.init(style: style)
-        effect.setValue(1.0, forKey: "scale")
-        effect.setValue(radius, forKey: "blurRadius")
-        effect.setValue(UIColor.clear, forKey: "colorTint")
+        
+        // TODO: UICustomBlurEffect
+//        effect.setValue(1.0, forKey: "scale")
+//        effect.setValue(radius, forKey: "blurRadius")
+//        effect.setValue(UIColor.clear, forKey: "colorTint")
         
         self.blurEffect = effect
     }
