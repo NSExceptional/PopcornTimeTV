@@ -108,7 +108,8 @@ extension PCTPlayerViewController: UIViewControllerTransitioningDelegate {
     }
     
     func endScrubbing() {
-        mediaplayer.willPlay ? mediaplayer.play() : ()
+        // TODO this used to read `mediaplayer.willPlay ?`
+        !mediaplayer.isPlaying ? mediaplayer.play() : ()
         resetIdleTimer()
         progressBar.isScrubbing = false
         dimmerView!.isHidden = true

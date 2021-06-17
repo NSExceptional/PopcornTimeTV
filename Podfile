@@ -1,6 +1,6 @@
 use_frameworks!
 
-source 'https://github.com/CocoaPods/Specs'
+source 'https://cdn.cocoapods.org/'
 source 'https://github.com/PopcornTimeTV/Specs'
 
 def pods
@@ -28,8 +28,8 @@ end
 target 'PopcornTimetvOS' do
     platform :tvos, '10.2'
     pods
-    pod 'TvOSMoreButton', '~> 1.2.0'
-    pod 'TVVLCKit', '~> 3.3.0'
+    pod 'TvOSMoreButton', :git => 'https://github.com/cgoldsby/TvOSMoreButton', :tag => '1.3.0'
+    pod 'TVVLCKit', '~> 3.3.16'
     pod 'MBCircularProgressBar', '~> 0.3.5-1'
 end
 
@@ -65,7 +65,7 @@ post_install do |installer|
         end
         if ['FloatRatingView-iOS', 'FloatRatingView-tvOS'].include? target.name
             target.build_configurations.each do |config|
-                config.build_settings['SWIFT_VERSION'] = '4.0'
+                config.build_settings['SWIFT_VERSION'] = '5.0'
             end
         end
     end
