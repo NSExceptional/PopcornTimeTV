@@ -169,11 +169,11 @@ internal class VersionString: NSObject, NSCoding {
     }
     
     func archived() -> Data {
-        return NSKeyedArchiver.archivedData(withRootObject: self)
+        return try! NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false)
     }
     
     class func unarchive(_ data: Data) -> VersionString? {
-        return NSKeyedUnarchiver.unarchiveObject(with: data) as? VersionString
+        return try? NSKeyedUnarchiver.unarchivedObject(ofClass: Self.self, from: data)
     }
 }
 
